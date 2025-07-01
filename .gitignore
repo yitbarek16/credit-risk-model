@@ -71,8 +71,6 @@ mlruns/
 data/processed/
 *.csv
 
-
-
 # Exceptions
 !.gitignore
 !README.md
