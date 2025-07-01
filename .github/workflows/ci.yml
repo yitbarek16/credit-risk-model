@@ -28,4 +28,5 @@ jobs:
         run: flake8 src tests --ignore=E501
 
       - name: Run unit tests
-        run: pytest tests
+        run: |
+         PYTHONPATH=src pytest tests
