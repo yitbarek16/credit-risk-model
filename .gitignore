@@ -68,15 +68,10 @@ mlruns/
 *.swo
 
 # Data files
-data/row/
-*.csv
-
 data/processed/
 *.csv
 
-# Model files
-models/
-!models/README.md  # Keep this if you have one
+
 
 # Exceptions
 !.gitignore
