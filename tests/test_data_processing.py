@@ -1,8 +1,6 @@
 import pandas as pd
-from data_processing import engineer_features  
+from data_processing import engineer_features
 
-# Unit test to validate that the main feature engineering pipeline runs successfully
-# on real-world data, and outputs key expected features.
 
 def test_engineer_features():
     # Load a sample raw dataset from the specified path
@@ -10,7 +8,7 @@ def test_engineer_features():
 
     # Run the complete feature engineering pipeline
     result = engineer_features(df)
-    
+
     # Assertions to confirm pipeline integrity
     assert not result.empty  # Ensure the output DataFrame is not empty
     assert "txn_hour" in result.columns  # Time-based feature from timestamp should be present

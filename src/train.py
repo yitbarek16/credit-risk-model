@@ -1,6 +1,5 @@
 import pandas as pd
 import mlflow
-mlflow.set_tracking_uri("http://127.0.0.1:5000")  # Set MLflow tracking URI to local server
 import mlflow.sklearn
 from joblib import dump
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -18,6 +17,8 @@ from proxy_target_engineering import (
     segment_customers_rfm,
     add_target_to_dataset
 )
+
+mlflow.set_tracking_uri("http://127.0.0.1:5000")  # Set MLflow tracking URI to local server
 
 
 def load_data(path="data/raw/data.csv"):
@@ -109,7 +110,7 @@ def train_models():
                 best_name = name
 
     # Step 8: Save the best model locally
-    print(f" Best model: {best_name} with F1 score: {best_score:.4f}")
+    print(f"Best model: {best_name} with F1 score: {best_score:.4f}")
     dump(best_model, f"models/{best_name}.joblib")
 
 

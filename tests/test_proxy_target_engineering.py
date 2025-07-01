@@ -5,9 +5,6 @@ from proxy_target_engineering import (
     add_target_to_dataset
 )
 
-# Unit test: Verifies that the full proxy-target engineering pipeline runs end-to-end
-# using a small sample dataset. This ensures that label generation based on RFM segmentation
-# produces a well-formed binary classification column `is_high_risk`.
 
 def test_proxy_target_pipeline_runs():
     # Step 1: Define a minimal synthetic dataset with 3 transactions
@@ -68,16 +65,16 @@ def test_proxy_target_pipeline_runs():
         }
     ])
 
-    # Step 2: Generate Recency-Frequency-Monetary (RFM) metrics from the sample data
+    # Step 2: Generate Recency-Frequency-Monetary (RFM) metrics
     rfm = calculate_rfm(sample_data)
 
-    # Step 3: Apply customer segmentation to RFM metrics to derive high/low risk labels
+    # Step 3: Segment customers into risk groups
     labels = segment_customers_rfm(rfm)
 
-    # Step 4: Merge the generated labels into the original dataset
+    # Step 4: Add target labels to dataset
     merged = add_target_to_dataset(sample_data, labels)
 
-    # Step 5: Assert that the target pipeline worked as expected
-    assert not merged.empty  # Resulting DataFrame should not be empty
-    assert "is_high_risk" in merged.columns  # Binary target column should exist
-    assert merged["is_high_risk"].isin([0, 1]).all()  # All labels must be either 0 or 1
+    # Step 5: Assertions
+    assert not merged.empty
+    assert "is_high_risk" in merged.columns
+    assert merged["is_high_risk"].isin([0, 1]).all()

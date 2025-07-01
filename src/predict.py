@@ -1,5 +1,7 @@
 import pandas as pd
 from joblib import load
+from data_processing import engineer_features
+
 
 # Load the trained model
 model = load("models/random_forest.joblib")
@@ -8,7 +10,6 @@ model = load("models/random_forest.joblib")
 new_data = pd.read_csv("data/raw/new_data.csv")
 
 # Apply the same preprocessing as in training
-from data_processing import engineer_features
 features = engineer_features(new_data)
 
 # Make predictions
@@ -21,4 +22,3 @@ output = pd.DataFrame({
     "risk_probability": predictions
 })
 output.to_csv("data/processed/predictions.csv", index=False)
-

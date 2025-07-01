@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from joblib import load
 from pydantic import ValidationError
-import mlflow.sklearn
-from src.api.pydantic_models import CustomerData, RiskResponse
 import pandas as pd
+import mlflow.sklearn
+
+from src.api.pydantic_models import CustomerData, RiskResponse
 
 app = FastAPI()
 
@@ -23,11 +23,11 @@ def predict(data: CustomerData):
     try:
         # Convert input data to DataFrame
         input_df = pd.DataFrame([data.dict()])
-        
+
         # Perform prediction (risk probability)
         risk_proba = model.predict_proba(input_df)[0][1]
 
         return RiskResponse(risk_probability=risk_proba)
-    
+
     except ValidationError as ve:
         return {"error": str(ve)}
