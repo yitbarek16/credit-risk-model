@@ -1,5 +1,5 @@
 import pandas as pd
-from proxy_target_engineering import (
+from src.proxy_target_engineering import (
     calculate_rfm,
     segment_customers_rfm,
     add_target_to_dataset
