@@ -1,0 +1,10 @@
+mlflow
+pytest
+fastapi
+uvicorn[standard]
+pydantic
+flake8
+black
+joblib
+scikit-learn
+
