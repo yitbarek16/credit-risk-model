@@ -30,7 +30,6 @@ jobs:
       - name: Run unit tests
         run: |
          PYTHONPATH=src pytest tests
-         PYTHONPATH=data/raw pytest tests
 
 
       
