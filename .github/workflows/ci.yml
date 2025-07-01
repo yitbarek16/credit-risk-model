@@ -26,5 +26,11 @@ jobs:
 
       - name: Run flake8 linter
         run: flake8 src tests --ignore=E501
+        
+      - name: Run unit tests
+        run: |
+         PYTHONPATH=src pytest tests
+         PYTHONPATH=data/raw pytest tests
+
 
       
