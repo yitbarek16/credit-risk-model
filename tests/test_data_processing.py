@@ -1,5 +1,5 @@
 import pandas as pd
-from src.data_processing import engineer_features
+from data_processing import engineer_features
 
 
 def test_engineer_features():
