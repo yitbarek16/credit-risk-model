@@ -1,60 +1,133 @@
-# Credit Scoring Business Understanding
-1. Basel II and the Need for Interpretable Models: The Basel II Accord emphasizes accurate risk measurement and regulatory compliance. This requires credit risk models to be transparent, interpretable, and well-documented, so that both internal stakeholders and regulators can understand how risk is assessed and ensure fair, consistent lending decisions.
+# 💳 Credit Risk Probability Modeling with Alternative Data
 
-2. Proxy Variables for Default and Associated Risks: In many datasets, a direct "default" label is missing. To train models, we create a proxy variable—for example, labeling a customer as defaulted if they miss payments for 90+ days. However, if this proxy doesn’t accurately reflect real-world defaults, it can lead to misclassification, biased decisions, and financial or reputational risk.
+## 📘 Overview
 
-3. Trade-offs: Simple vs. Complex Models
+Traditional credit scoring relies on historical loan repayment data, which excludes many customers with limited or no credit history. To support a **Buy-Now-Pay-Later (BNPL)** service, **Bati Bank** partnered with an eCommerce platform to assess customer creditworthiness using **alternative behavioral data**.
 
-Simple models (e.g., Logistic Regression with WoE) are easy to explain and audit, making them ideal for regulated environments.
+This project builds an **end-to-end credit risk modeling system** that transforms transaction behavior into a **credit risk probability**, a **credit score**, and **loan recommendations**. The solution combines feature engineering, machine learning, and MLOps best practices to deliver a production-ready credit scoring pipeline.
 
-Complex models (e.g., Gradient Boosting) often deliver higher predictive accuracy but are harder to interpret. The key trade-off is between performance and explainability—in finance, interpretability often takes priority to meet compliance and build trust.
+This project was completed as part of the **10 Academy – Artificial Intelligence Mastery Program (Week 5 Challenge)**.
 
-# Credit Risk Scoring Pipeline
 
-This project presents an end-to-end machine learning pipeline for simulating credit risk prediction using transaction-level data.
+## 🎯 Business Problem
 
-## Key Features
+Bati Bank needs a reliable way to decide:
 
-- **Feature Engineering**  
-  Derived temporal features, aggregated customer behavior, and preprocessed numerical/categorical data using a modular scikit-learn pipeline.
+* **Who qualifies** for BNPL credit
+* **How risky** each customer is
+* **How much credit** to offer and for how long
 
-- **Proxy Target Generation**  
-  Applied RFM-based clustering with KMeans to define high-risk customer segments in the absence of labeled credit default data.
+The challenge is that the dataset does **not contain a direct default label**. The solution must therefore:
 
-- **Model Training & Evaluation**  
-  Trained Logistic Regression and Random Forest classifiers. Random Forest outperformed across accuracy, F1 score, and ROC AUC, and was selected for deployment.
+* Define a **proxy for credit risk**
+* Use behavioral patterns to predict default likelihood
+* Produce explainable and regulator-friendly results in line with **Basel II principles**
 
-- **Model Deployment**  
-  Exposed the trained model as a RESTful API using FastAPI, with prediction capability via `/predict` endpoint. Model is loaded directly from MLflow Model Registry.
 
-- **Containerization & CI/CD**  
-  Dockerized the service and integrated automated testing and linting via GitHub Actions to enforce code quality and maintainability.
+## 📂 Dataset
 
-## Tech Stack
+The dataset comes from an eCommerce transaction platform and includes **customer-level behavioral data**, such as:
 
-- Python, scikit-learn, pandas
-- MLflow for experiment tracking & model registry
-- FastAPI & Uvicorn for API serving
-- Docker + docker-compose
-- GitHub Actions (CI/CD)
-- flake8 & pytest for code quality
+* Transaction history (amounts, frequency, recency)
+* Product categories and providers
+* Channels used (web, mobile, BNPL)
+* Pricing strategy and fraud indicators
+* Time-based transaction patterns
+
+This data enables **behavior-based credit modeling** without traditional loan records.
+
+
+## 🔍 What This Project Does
+
+### 1️⃣ Proxy Default Definition
+
+* Used **RFM (Recency, Frequency, Monetary)** analysis to represent customer risk behavior
+* Applied **KMeans clustering** to segment customers
+* Labeled high-risk clusters as *bad* and low-risk clusters as *good*
+
+This created a **proxy default variable** suitable for supervised learning.
+
+### 2️⃣ Feature Engineering
+
+* Aggregated transaction data at the customer level
+* Engineered behavioral, temporal, and monetary features
+* Built a modular **scikit-learn pipeline** for preprocessing and modeling
+
+### 3️⃣ Credit Risk Modeling
+
+* Trained and evaluated:
+
+  * **Logistic Regression** (interpretable baseline)
+  * **Random Forest Classifier** (performance-focused)
+* Compared models using:
+
+  * Accuracy
+  * Precision / Recall
+  * F1-score
+  * ROC AUC
+
+**Random Forest** achieved the best balance and was selected.
+
+### 4️⃣ Credit Score & Loan Estimation
+
+* Converted predicted **risk probabilities** into:
+
+  * A **credit score**
+  * Recommended **loan amount**
+  * Suggested **loan duration**
+
+This enables actionable BNPL decisions, not just predictions.
+
+### 5️⃣ Deployment & MLOps
+
+* Tracked experiments and registered models using **MLflow**
+* Exposed the trained model via a **FastAPI REST API**
+* Dockerized the service for reproducibility
+* Integrated **CI/CD** with GitHub Actions
+* Implemented logging, testing, and linting for production readiness
+
+
+## 📊 Model Performance (Final Model)
+
+**Random Forest Classifier**
+
+* Accuracy: **0.73**
+* F1 Score: **0.51**
+* Precision: **0.59**
+* Recall: **0.45**
+* ROC AUC: **0.77**
+
+The model delivers a strong balance between risk detection and false positives, suitable for credit decision workflows.
+
+
+## 🚀 Outcome
+
+The final system provides Bati Bank with:
+
+* A **risk probability score** for each customer
+* A derived **credit score**
+* Data-driven **loan amount and duration recommendations**
+* A fully deployable and auditable ML pipeline
+
+
+## 🧰 Tech Stack
+
+* **Python**
+* **Pandas, NumPy**
+* **Scikit-learn**
+* **MLflow**
+* **FastAPI & Uvicorn**
+* **Docker & Docker Compose**
+* **GitHub Actions (CI/CD)**
+* **Pytest, Flake8**
+* **Logging & Model Registry**
+
+
+## 🛡️ License
+
+This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and share this project with proper attribution.
 
 ---
+Let's stay in touch! Feel free to connect with me on LinkedIn:
 
-This project demonstrates applied machine learning principles for real-world modeling, reproducibility, and deployment workflows.
-
-## Model Selection and Performance
-
-I trained both a Logistic Regression model and a Random Forest Classifier, comparing them using cross-validation and multiple performance metrics. While Logistic Regression offered slightly higher precision, its F1 score was extremely low-highlighting an imbalance in predictive performance.
-
-**Final Model: Random Forest Classifier**  
-It delivered the best balance between precision and recall, with the following results:
-
-- Accuracy: 0.73
-- F1 Score: 0.51
-- Precision: 0.59
-- Recall: 0.45
-- ROC AUC: 0.77
-
-The model was registered in MLflow and deployed via a FastAPI endpoint for serving predictions.
-
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/yitbarektesfaye)
